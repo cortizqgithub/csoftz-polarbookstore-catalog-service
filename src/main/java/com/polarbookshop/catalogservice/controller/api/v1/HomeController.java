@@ -6,26 +6,28 @@
  History
  Sep.23/2023  COQ  File created.
  -----------------------------------------------------------------------------*/
-package com.polarbookshop.catalogservice;
+package com.polarbookshop.catalogservice.controller.api.v1;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Entry point for running the application.
  *
  * @author COQ - Carlos Adolfo Ortiz Q.
  */
-@SpringBootApplication
-public class Application {
+@RestController
+@RequestMapping("/api/v1/home")
+public class HomeController {
 
     /**
-     * Running application definition entry point.
+     * Issues a welcome message.
      *
-     * @param args Includes the command line parameters for the application.
+     * @return Text for the welcome message.
      */
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+    @GetMapping
+    public String getGreeting() {
+        return "Welcome to the book Catalog!";
     }
-
 }
