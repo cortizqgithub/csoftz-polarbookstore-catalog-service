@@ -17,3 +17,65 @@ $./gradlew bootBuildImage <2>
 ----
 $ docker run --rm --name catalog-service -p 8080:8080 catalog-service:2023.1.0
 ----
+
+To run the _Kubernetes_ commands, it is required that you have a local development cluster, here we use
+*_Rancher Desktop_*.
+
+[source,bash]
+----
+$ kubectl create deployment catalog-service --image=catalog-service:2023.1.0
+----
+
+You can verify the creation of the Deployment object as follows:
+
+[source,bash]
+----
+$ kubectl get deployment
+----
+
+To check pods
+[source,bash]
+----
+$ kubectl get pod
+----
+
+You can check the application logs by running
+
+[source,bash]
+----
+$ kubectl logs deployment/catalog-service
+----
+
+By default, applications running in _Kubernetes_ are not accessible. To enable it, run the following command.
+
+[source,bash]
+----
+$ kubectl expose deployment catalog-service --name=catalog-service --port=8010
+----
+
+To verify the service is exposed
+
+[source, bash]
+----
+$ kubectl get service catalog-service
+----
+
+Last thing to do is forward the traffic to the service.
+
+[source,bash]
+----
+$ kubectl port-forward service/catalog-service 7000:8010
+----
+
+Now if you need to remove everthing so far.
+
+
+[source,bash]
+----
+$ kubectl delete deployment catalog-service
+----
+
+[source,bash]
+----
+$ kubectl delete service catalog-service
+----
