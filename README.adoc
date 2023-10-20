@@ -3,7 +3,95 @@ Standalone repository for the _'catalog-service_'.
 Keeps the same code as Thomas Vitale Book Spring Cloud Native but in my own format. He uses Gradle in the _git_ repository, but I use Maven instead. 
 
 The book reference follows:
-https://www.manning.com/books/cloud-native-spring-in-action[Cloud Native Spring in Action^] book
-by https://www.thomasvitale.com[Thomas Vitale^].
+https://www.manning.com/books/cloud-native-spring-in-action[Cloud Native Spring in Action^] book by https://www.thomasvitale.com[Thomas Vitale^].
 
+[source,bash]
+----
+$ mvn spring-bood:buildImage <1>
+$./gradlew bootBuildImage <2>
+----
+
+<1> Maven
+<2> Gradle
+
+[source,bash]
+----
+$ docker run --rm --name catalog-service -p 8080:8080 catalog-service:2023.1.0
+----
+
+To run the _Kubernetes_ commands, it is required that you have a local development cluster, here we use
+*_Rancher Desktop_*.
+
+[source,bash]
+----
+$ kubectl create deployment catalog-service --image=catalog-service:2023.1.0
+----
+
+You can verify the creation of the Deployment object as follows:
+
+[source,bash]
+----
+$ kubectl get deployment
+----
+
+To check pods
+
+[source,bash]
+----
+$ kubectl get pod
+----
+
+You can check the application logs by running
+
+[source,bash]
+----
+$ kubectl logs deployment/catalog-service
+----
+
+By default, applications running in _Kubernetes_ are not accessible.
+To enable it, run the following command.
+
+[NOTE]
+====
+The Catalog Service is listening in port 8080, so to expose the deployment service with the following command you use 8080 port.
+====
+
+[source,bash]
+----
+$ kubectl expose deployment catalog-service --name=catalog-service --port=8080
+----
+
+To verify the service is exposed.
+
+[source,bash]
+----
+$ kubectl get service catalog-service
+----
+
+Last thing to do is forward the traffic to the service.
+
+[source,bash]
+----
+$ kubectl port-forward service/catalog-service 8000:8080
+----
+
+Now if you need to remove everything so far.
+
+[source,bash]
+----
+$ kubectl delete deployment catalog-service
+----
+
+[source,bash]
+----
+$ kubectl delete service catalog-service
+----
+
+Now to check that the service is running as expected, use the following cURL/HTTPie
+
+[source,bash]
+----
+$ curl --request GET --url http://127.0.0.1:8000/api/v1/home
+$ http GET http://127.0.0.1:8000/api/v1/home
+----
 

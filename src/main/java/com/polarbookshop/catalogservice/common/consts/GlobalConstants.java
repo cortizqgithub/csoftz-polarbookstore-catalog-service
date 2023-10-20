@@ -1,29 +1,25 @@
 /*----------------------------------------------------------------------------*/
-/* Source File:   APPLICATIONTESTS.JAVA                                       */
+/* Source File:   GLOBALCONSTANTS.JAVA                                        */
 /* Copyright (c), 2023 CSoftZ                                                 */
 /*----------------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------------
  History
- Sep.23/2023  COQ  File created.
+ Oct.12/2023  COQ  File created.
  -----------------------------------------------------------------------------*/
-package com.polarbookshop.catalogservice;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+package com.polarbookshop.catalogservice.common.consts;
 
 /**
- * Unit tests for Application class.
+ * General purpose application constants.
  *
  * @author COQ - Carlos Adolfo Ortiz Q.
  */
-@SpringBootTest
-class ApplicationTests {
+public class GlobalConstants {
+
+    public static final String SLASH = "/";
 
     /**
-     * Load Spring Boot contexts to validate it can run the application.
+     * This is a utility class thus we must avoid to instantiate this.
      */
-    @Test
-    void contextLoads() {
+    private GlobalConstants() {
     }
-
 }
