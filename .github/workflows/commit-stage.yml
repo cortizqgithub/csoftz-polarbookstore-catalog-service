@@ -16,11 +16,11 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-          cache: gradle
+          cache: maven
       - name: Build, unit tests and integration tests
         run: |
-          chmod +x gradlew
-          ./gradlew build
+          chmod +x mvnw
+          ./mvnw --file pom.xml
       - name: Code vulnerability scanning
         uses: anchore/scan-action@v3
         id: scan
