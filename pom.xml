@@ -78,10 +78,10 @@
         <!-- END PostgreSQL JDBC Driver -->
 
         <!-- Flyway Database migration -->
-        <!--<dependency>
+        <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-        </dependency>-->
+        </dependency>
         <!-- END Flyway Database migration -->
 
         <!-- Testing dependencies -->

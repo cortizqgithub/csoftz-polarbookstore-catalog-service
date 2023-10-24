@@ -31,9 +31,6 @@ spring:
     hikari:
       connection-timeout: 2000 # 2s
       maximun-pool-size: 5
-  sql:
-    init:
-      mode: always #Don't use this in PROD
 
 management:
   endpoints:
