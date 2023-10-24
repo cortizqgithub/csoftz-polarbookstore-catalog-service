@@ -10,6 +10,7 @@ package com.polarbookshop.catalogservice.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
@@ -25,6 +26,10 @@ public class BookJsonTests {
     private static final String ISBN = "1234567890";
     private static final String TITLE = "Title";
     private static final String AUTHOR = "Author";
+    private static final String ISBN_JPATH = "@.isbn";
+    private static final String TITLE_JPATH = "@.title";
+    private static final String AUTHOR_JPATH = "@.author";
+    private static final String PRICE_JPATH = "@.price";
 
     private static final double PRICE = 9.90;
 
@@ -32,20 +37,23 @@ public class BookJsonTests {
     private JacksonTester<Book> json;
 
     @Test
+    @DisplayName("Verify we can serialize to JSON.")
     void testSerialize() throws Exception {
-        var book = new Book(ISBN, TITLE, AUTHOR, PRICE);
+        var book = Book.of(ISBN, TITLE, AUTHOR, PRICE);
+
         var jsonContent = json.write(book);
-        assertThat(jsonContent).extractingJsonPathStringValue("@.isbn")
+        assertThat(jsonContent).extractingJsonPathStringValue(ISBN_JPATH)
             .isEqualTo(book.isbn());
-        assertThat(jsonContent).extractingJsonPathStringValue("@.title")
+        assertThat(jsonContent).extractingJsonPathStringValue(TITLE_JPATH)
             .isEqualTo(book.title());
-        assertThat(jsonContent).extractingJsonPathStringValue("@.author")
+        assertThat(jsonContent).extractingJsonPathStringValue(AUTHOR_JPATH)
             .isEqualTo(book.author());
-        assertThat(jsonContent).extractingJsonPathNumberValue("@.price")
+        assertThat(jsonContent).extractingJsonPathNumberValue(PRICE_JPATH)
             .isEqualTo(book.price());
     }
 
     @Test
+    @DisplayName("Verify we can deserialize from JSON.")
     void testDeserialize() throws Exception {
         var content = """
             {
@@ -57,6 +65,6 @@ public class BookJsonTests {
             """;
         assertThat(json.parse(content))
             .usingRecursiveComparison()
-            .isEqualTo(new Book(ISBN, TITLE, AUTHOR, PRICE));
+            .isEqualTo(Book.of(ISBN, TITLE, AUTHOR, PRICE));
     }
 }

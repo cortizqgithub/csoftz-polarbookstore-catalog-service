@@ -55,7 +55,7 @@ class BookServiceImplTest {
     @DisplayName("Verify when a book is already created an exception is thrown.")
     void whenBookToCreateAlreadyExistsThenThrows() {
         var bookIsbn = ISBN;
-        var bookToCreate = new Book(bookIsbn, TITLE, AUTHOR, PRICE);
+        var bookToCreate = Book.of(bookIsbn, TITLE, AUTHOR, PRICE);
 
         when(bookRepository.existsByIsbn(bookIsbn)).thenReturn(true);
 

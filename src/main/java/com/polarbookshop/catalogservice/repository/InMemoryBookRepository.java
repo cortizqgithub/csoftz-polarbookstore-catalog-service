@@ -12,42 +12,40 @@ import com.polarbookshop.catalogservice.domain.Book;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import org.springframework.stereotype.Repository;
 
 /**
  * Implements the {@link BookRepository} contract with an in-memory store for the Book Catalog.
  *
+ * <p><b>NOTE:</b>On Oct.23/2023, the service uses Spring Data JDBC, thus we no longer need this implementation
+ * instead of removing this class from the project, we leave this as a reference material and the only
+ * thing to remove is actually the annotation or comment it out. And also the implements clause.</p>
+ *
  * @author COQ - Carlos Adolfo Ortiz Q.
  */
-@Repository
-public class InMemoryBookRepository implements BookRepository {
+// Uncomment to enable using this class to inject where necessary @Repository
+public class InMemoryBookRepository {
     private static final Map<String, Book> books = new ConcurrentHashMap<>();
 
-    @Override
     public Iterable<Book> findAll() {
         return books.values();
     }
 
-    @Override
     public Optional<Book> findByIsbn(String isbn) {
         return existsByIsbn(isbn)
             ? Optional.of(books.get(isbn))
             : Optional.empty();
     }
 
-    @Override
     public boolean existsByIsbn(String isbn) {
         return books.get(isbn) != null;
     }
 
-    @Override
     public Book save(Book book) {
         books.put(book.isbn(), book);
 
         return book;
     }
 
-    @Override
     public void deleteByIsbn(String isbn) {
         books.remove(isbn);
     }

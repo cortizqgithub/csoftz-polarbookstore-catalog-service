@@ -8,7 +8,7 @@
  -----------------------------------------------------------------------------*/
 package com.polarbookshop.catalogservice.controller.api.v1;
 
-import com.polarbookshop.catalogservice.common.config.PolarProperties;
+import com.polarbookshop.catalogservice.common.config.properties.PolarProperties;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +25,7 @@ public class HomeController {
 
     /**
      * Constructor with parameters.
+     *
      * @param polarProperties Injects the 'polar' group of properties.
      */
     public HomeController(PolarProperties polarProperties) {

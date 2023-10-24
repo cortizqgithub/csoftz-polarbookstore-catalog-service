@@ -19,6 +19,7 @@ import static com.polarbookshop.catalogservice.common.consts.GlobalConstants.BOO
 
 import com.polarbookshop.catalogservice.domain.Book;
 import com.polarbookshop.catalogservice.repository.BookRepository;
+import java.util.List;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
@@ -52,11 +53,12 @@ public class BookDataLoader {
      */
     @EventListener(ApplicationReadyEvent.class)
     public void loadBookTestData() {
-        var book1 = new Book(BOOK_ISBN_ONE, BOOK_TITLE_ONE, BOOK_AUTHOR_ONE, BOOK_PRICE_ONE);
-        var book2 = new Book(BOOK_ISBN_TWO, BOOK_TITLE_TWO, BOOK_AUTHOR_TWO, BOOK_PRICE_TWO);
-
-        bookRepository.save(book1);
-        bookRepository.save(book2);
-
+        bookRepository.deleteAll();
+        bookRepository.saveAll(
+            List.of(
+                Book.of(BOOK_ISBN_ONE, BOOK_TITLE_ONE, BOOK_AUTHOR_ONE, BOOK_PRICE_ONE),
+                Book.of(BOOK_ISBN_TWO, BOOK_TITLE_TWO, BOOK_AUTHOR_TWO, BOOK_PRICE_TWO)
+            )
+        );
     }
 }

@@ -1,7 +1,8 @@
 = csoftz-polarbookstore-catalog-service
 
 Standalone repository for the _'catalog-service_'.
-Keeps the same code as Thomas Vitale Book Spring Cloud Native but in my own format. He uses Gradle in the _git_ repository, but I use Maven instead. 
+Keeps the same code as Thomas Vitale Book Spring Cloud Native but in my own format.
+He uses Gradle in the _git_ repository, but I use Maven instead.
 
 The book reference follows:
 https://www.manning.com/books/cloud-native-spring-in-action[Cloud Native Spring in Action^] book by https://www.thomasvitale.com[Thomas Vitale^].
@@ -98,3 +99,89 @@ $ curl --request GET --url http://127.0.0.1:8000/api/v1/home
 $ http GET http://127.0.0.1:8000/api/v1/home
 ----
 
+== REST API
+
+[%header]
+|===
+|Endpoint|Method|Req. body|Status|Resp. body|Description
+|/books         | GET    | |200|Book[]|Get all the books in the catalog
+|/books         | POST   | Book       | 201    | Book           | Add a new book to the catalog.
+|               |        |            | 422    |                | A book with the same ISBN already exists.
+| /books/{isbn} | GET    |            | 200    | Book           | Get the book with the given ISBN.
+|               |        |            | 404    |                | No book with the given ISBN exists.
+| /books/{isbn} | PUT    | Book       | 200    | Book           | Update the book with the given ISBN.
+|               |        |            | 201    | Book           | Create a book with the given ISBN.
+| /books/{isbn} | DELETE |            | 204    |                | Delete the book with the given ISBN.
+|===
+
+== Integrating with a Data Service Using PostgreSQL
+
+In order to connect to a *_PostgreSQL_* Database, we use *_Docker_* for that purpose.
+Use the following command.
+
+[source,bash]
+----
+$ docker run -d \
+--name polar-postgres \
+-e POSTGRES_USER=user \
+-e POSTGRES_PASSWORD=password \
+-e POSTGRES_DB=polardb_catalog \
+-p 5432:5432 \
+postgres:16.0  <1>
+----
+
+<1> https://hub.docker.com/_/postgres, use latest tag to use the most recent version.
+
+[WARNING]
+====
+The latter command will not define a storage volume for externalizing the data the container uses, thus, when you shut down the container, the data is lost.
+
+-> Pending to add instructions to add a docker volumen to persist data to disk.
+
+====
+
+[NOTE]
+====
+If you need to, you can stop the container with *_docker stop polar-postgres_*
+and start it again with *_docker start polar-postgres_*.
+If you want to start over, you can remove the container with *_docker rm -fv polar-postgres_*
+and create it again with the previous docker run command.
+====
+
+=== Database commands
+
+You can use any IDE to access the database contents such as https://dbeaver.io/[DBeaver Community - Universal Database Tool], or you could open a terminal window connecting the Docker container.
+
+Start an interactive PSQL console:
+
+[source,bash]
+----
+$ docker exec -it polar-postgres psql -U user -d polardb_catalog
+----
+
+Then use any of the following commands to check.
+
+[%header]
+|===
+| PSQL Command            | Description
+| \list                    | List all databases.
+| \connect polardb_catalog | Connect to specific database.
+| \dt                      | List all tables.
+| \d book                   | Show the *book* table schema.
+| \d flyway_schema_history | Show the *flyway_schema_history* table schema.
+| \quit                    | Quit interactive psql console.
+|===
+
+From within the PSQL console, you can also fetch all the data stored in the `book` table.
+
+[source,sql]
+----
+select * from book;
+----
+
+The following query is to fetch all the data stored in the `flyway_schema_history` table.
+
+[source,sql]
+----
+select * from flyway_schema_history;
+----

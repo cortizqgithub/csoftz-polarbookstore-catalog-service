@@ -6,7 +6,7 @@
  History
  Oct.21/2023  COQ  File created.
  -----------------------------------------------------------------------------*/
-package com.polarbookshop.catalogservice.common.config;
+package com.polarbookshop.catalogservice.common.config.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

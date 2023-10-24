@@ -10,15 +10,20 @@ package com.polarbookshop.catalogservice.controller.api.v1;
 
 import static com.polarbookshop.catalogservice.common.consts.ExceptionConstants.BOOK_WITH_ISBN_NOT_FOUND;
 import static com.polarbookshop.catalogservice.common.consts.GlobalConstants.SLASH;
+import static com.polarbookshop.catalogservice.common.consts.TestcontainerConstants.POSTGRESQL_DOCKER_VERSION;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.polarbookshop.catalogservice.domain.Book;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 /**
  * Performs Full Integration Test (uses the whole Spring Context) for {@link BookController}.
@@ -28,8 +33,9 @@ import org.springframework.test.web.reactive.server.WebTestClient;
  *
  * @author COQ - Carlos Adolfo Ortiz Q.
  */
+@Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureWebTestClient
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class BookControllerIntegrationTest {
     private static final String ISBN = "1231231230";
     private static final String ISBN_TWO = "1231231231";
@@ -40,6 +46,11 @@ class BookControllerIntegrationTest {
     private static final String API_BOOK_PATH = "/api/v1/books";
 
     private static final double PRICE = 9.90;
+    private static final double PRICE_7_95 = 7.95;
+
+    @Container
+    @ServiceConnection
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(POSTGRESQL_DOCKER_VERSION);
 
     @Autowired
     private WebTestClient webTestClient;
@@ -48,7 +59,7 @@ class BookControllerIntegrationTest {
     @DisplayName("Verify when making a request with an ISBN, a book is returned.")
     void whenGetRequestWithIdThenBookReturned() {
         var bookIsbn = ISBN;
-        var bookToCreate = new Book(bookIsbn, TITLE, AUTHOR, PRICE);
+        var bookToCreate = Book.of(bookIsbn, TITLE, AUTHOR, PRICE);
 
         var expectedBook = webTestClient
             .post()
@@ -73,7 +84,7 @@ class BookControllerIntegrationTest {
     @Test
     @DisplayName("Verify when a book is created the action the status is CREATED")
     void whenPostRequestThenBookCreated() {
-        var expectedBook = new Book(ISBN_TWO, TITLE, AUTHOR, PRICE);
+        var expectedBook = Book.of(ISBN_TWO, TITLE, AUTHOR, PRICE);
 
         webTestClient
             .post()
@@ -91,7 +102,7 @@ class BookControllerIntegrationTest {
     @DisplayName("Verify when a book is edit then the status is CREATED")
     void whenPutRequestThenBookUpdated() {
         var bookIsbn = ISBN_THREE;
-        var bookToCreate = new Book(bookIsbn, TITLE, AUTHOR, PRICE);
+        var bookToCreate = Book.of(bookIsbn, TITLE, AUTHOR, PRICE);
 
         var createdBook = webTestClient
             .post()
@@ -101,7 +112,7 @@ class BookControllerIntegrationTest {
             .expectStatus().isCreated()
             .expectBody(Book.class).value(book -> assertThat(book).isNotNull())
             .returnResult().getResponseBody();
-        var bookToUpdate = new Book(createdBook.isbn(), createdBook.title(), createdBook.author(), 7.95);
+        var bookToUpdate = Book.of(createdBook.isbn(), createdBook.title(), createdBook.author(), PRICE_7_95);
 
         webTestClient
             .put()
@@ -119,7 +130,7 @@ class BookControllerIntegrationTest {
     @DisplayName("Verify when a delete a book then the status is CREATED")
     void whenDeleteRequestThenBookDeleted() {
         var bookIsbn = ISBN_FOUR;
-        var bookToCreate = new Book(bookIsbn, TITLE, AUTHOR, PRICE);
+        var bookToCreate = Book.of(bookIsbn, TITLE, AUTHOR, PRICE);
 
         webTestClient
             .post()

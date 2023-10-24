@@ -23,6 +23,7 @@ import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -51,16 +52,18 @@ class BookValidationTests {
     }
 
     @Test
+    @DisplayName("Verify when all fields are correct then validation succeeds")
     void whenAllFieldsCorrectThenValidationSucceeds() {
-        var book = new Book(ISBN, TITLE, AUTHOR, PRICE);
+        var book = Book.of(ISBN, TITLE, AUTHOR, PRICE);
         var violations = validator.validate(book);
 
         assertThat(violations).isEmpty();
     }
 
     @Test
+    @DisplayName("Verify when ISBN is not defined then validation fails.")
     void whenIsbnNotDefinedThenValidationFails() {
-        var book = new Book(AUTHOR_EMPTY, TITLE, AUTHOR, PRICE);
+        var book = Book.of(AUTHOR_EMPTY, TITLE, AUTHOR, PRICE);
         var violations = validator.validate(book);
 
         assertThat(violations).hasSize(2);
@@ -73,8 +76,9 @@ class BookValidationTests {
     }
 
     @Test
+    @DisplayName("Verify ISBN is defined but it is not correct then fails.")
     void whenIsbnDefinedButIncorrectThenValidationFails() {
-        var book = new Book(ISBN_INVALID, TITLE, AUTHOR, PRICE);
+        var book = Book.of(ISBN_INVALID, TITLE, AUTHOR, PRICE);
         var violations = validator.validate(book);
 
         assertThat(violations).hasSize(INT_ONE);
@@ -83,8 +87,9 @@ class BookValidationTests {
     }
 
     @Test
+    @DisplayName("Verify when Title is not defined then validation fails.")
     void whenTitleIsNotDefinedThenValidationFails() {
-        var book = new Book(ISBN, AUTHOR_EMPTY, AUTHOR, PRICE);
+        var book = Book.of(ISBN, AUTHOR_EMPTY, AUTHOR, PRICE);
         var violations = validator.validate(book);
 
         assertThat(violations).hasSize(INT_ONE);
@@ -93,8 +98,9 @@ class BookValidationTests {
     }
 
     @Test
+    @DisplayName("Verify when Author is not defined then validation fails.")
     void whenAuthorIsNotDefinedThenValidationFails() {
-        var book = new Book(ISBN, TITLE, AUTHOR_EMPTY, PRICE);
+        var book = Book.of(ISBN, TITLE, AUTHOR_EMPTY, PRICE);
         var violations = validator.validate(book);
 
         assertThat(violations).hasSize(INT_ONE);
@@ -103,8 +109,9 @@ class BookValidationTests {
     }
 
     @Test
+    @DisplayName("Verify when Price is not defined then validation fails.")
     void whenPriceIsNotDefinedThenValidationFails() {
-        var book = new Book(ISBN, TITLE, AUTHOR, null);
+        var book = Book.of(ISBN, TITLE, AUTHOR, null);
         var violations = validator.validate(book);
 
         assertThat(violations).hasSize(INT_ONE);
@@ -113,8 +120,9 @@ class BookValidationTests {
     }
 
     @Test
+    @DisplayName("Verify when Price is defined but it has a zero value then validation fails.")
     void whenPriceDefinedButZeroThenValidationFails() {
-        var book = new Book(ISBN, TITLE, AUTHOR, PRICE_ZERO);
+        var book = Book.of(ISBN, TITLE, AUTHOR, PRICE_ZERO);
         Set<ConstraintViolation<Book>> violations = validator.validate(book);
 
         assertThat(violations).hasSize(INT_ONE);
@@ -123,8 +131,9 @@ class BookValidationTests {
     }
 
     @Test
+    @DisplayName("Verify when Price is defined but it has a negative value then validation fails.")
     void whenPriceDefinedButNegativeThenValidationFails() {
-        var book = new Book(ISBN, TITLE, AUTHOR, -PRICE);
+        var book = Book.of(ISBN, TITLE, AUTHOR, -PRICE);
         var violations = validator.validate(book);
 
         assertThat(violations).hasSize(INT_ONE);
