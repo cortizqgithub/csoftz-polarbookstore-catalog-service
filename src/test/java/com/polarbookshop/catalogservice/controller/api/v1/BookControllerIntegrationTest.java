@@ -9,6 +9,7 @@
 package com.polarbookshop.catalogservice.controller.api.v1;
 
 import static com.polarbookshop.catalogservice.common.consts.ExceptionConstants.BOOK_WITH_ISBN_NOT_FOUND;
+import static com.polarbookshop.catalogservice.common.consts.GlobalConstants.PUBLISHER;
 import static com.polarbookshop.catalogservice.common.consts.GlobalConstants.SLASH;
 import static com.polarbookshop.catalogservice.common.consts.TestcontainerConstants.POSTGRESQL_DOCKER_VERSION;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -59,7 +60,7 @@ class BookControllerIntegrationTest {
     @DisplayName("Verify when making a request with an ISBN, a book is returned.")
     void whenGetRequestWithIdThenBookReturned() {
         var bookIsbn = ISBN;
-        var bookToCreate = Book.of(bookIsbn, TITLE, AUTHOR, PRICE);
+        var bookToCreate = Book.of(bookIsbn, TITLE, AUTHOR, PRICE, PUBLISHER);
 
         var expectedBook = webTestClient
             .post()
@@ -84,7 +85,7 @@ class BookControllerIntegrationTest {
     @Test
     @DisplayName("Verify when a book is created the action the status is CREATED")
     void whenPostRequestThenBookCreated() {
-        var expectedBook = Book.of(ISBN_TWO, TITLE, AUTHOR, PRICE);
+        var expectedBook = Book.of(ISBN_TWO, TITLE, AUTHOR, PRICE, PUBLISHER);
 
         webTestClient
             .post()
@@ -102,7 +103,7 @@ class BookControllerIntegrationTest {
     @DisplayName("Verify when a book is edit then the status is CREATED")
     void whenPutRequestThenBookUpdated() {
         var bookIsbn = ISBN_THREE;
-        var bookToCreate = Book.of(bookIsbn, TITLE, AUTHOR, PRICE);
+        var bookToCreate = Book.of(bookIsbn, TITLE, AUTHOR, PRICE, PUBLISHER);
 
         var createdBook = webTestClient
             .post()
@@ -112,7 +113,7 @@ class BookControllerIntegrationTest {
             .expectStatus().isCreated()
             .expectBody(Book.class).value(book -> assertThat(book).isNotNull())
             .returnResult().getResponseBody();
-        var bookToUpdate = Book.of(createdBook.isbn(), createdBook.title(), createdBook.author(), PRICE_7_95);
+        var bookToUpdate = Book.of(createdBook.isbn(), createdBook.title(), createdBook.author(), PRICE_7_95, PUBLISHER);
 
         webTestClient
             .put()
@@ -130,7 +131,7 @@ class BookControllerIntegrationTest {
     @DisplayName("Verify when a delete a book then the status is CREATED")
     void whenDeleteRequestThenBookDeleted() {
         var bookIsbn = ISBN_FOUR;
-        var bookToCreate = Book.of(bookIsbn, TITLE, AUTHOR, PRICE);
+        var bookToCreate = Book.of(bookIsbn, TITLE, AUTHOR, PRICE, PUBLISHER);
 
         webTestClient
             .post()
@@ -150,7 +151,6 @@ class BookControllerIntegrationTest {
             .uri(API_BOOK_PATH + SLASH + bookIsbn)
             .exchange()
             .expectStatus().isNotFound()
-            .expectBody(String.class).value(errorMessage ->
-                assertThat(errorMessage).isEqualTo(String.format(BOOK_WITH_ISBN_NOT_FOUND, bookIsbn)));
+            .expectBody(String.class).value(errorMessage -> assertThat(errorMessage).isEqualTo(String.format(BOOK_WITH_ISBN_NOT_FOUND, bookIsbn)));
     }
 }

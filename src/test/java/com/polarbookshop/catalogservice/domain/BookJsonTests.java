@@ -8,6 +8,7 @@
  -----------------------------------------------------------------------------*/
 package com.polarbookshop.catalogservice.domain;
 
+import static com.polarbookshop.catalogservice.common.consts.GlobalConstants.PUBLISHER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.DisplayName;
@@ -39,7 +40,7 @@ public class BookJsonTests {
     @Test
     @DisplayName("Verify we can serialize to JSON.")
     void testSerialize() throws Exception {
-        var book = Book.of(ISBN, TITLE, AUTHOR, PRICE);
+        var book = Book.of(ISBN, TITLE, AUTHOR, PRICE, PUBLISHER);
 
         var jsonContent = json.write(book);
         assertThat(jsonContent).extractingJsonPathStringValue(ISBN_JPATH)
@@ -60,11 +61,12 @@ public class BookJsonTests {
                 "isbn": "1234567890",
                 "title": "Title",
                 "author": "Author",
-                "price": 9.90
+                "price": 9.90,
+                "publisher": "Polarsophia"
             }
             """;
         assertThat(json.parse(content))
             .usingRecursiveComparison()
-            .isEqualTo(Book.of(ISBN, TITLE, AUTHOR, PRICE));
+            .isEqualTo(Book.of(ISBN, TITLE, AUTHOR, PRICE, PUBLISHER));
     }
 }

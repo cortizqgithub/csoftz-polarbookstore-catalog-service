@@ -14,6 +14,7 @@ Provides functionality for managing the books in the catalog.
 $ mvn spring-bood:buildImage <1>
 $./gradlew bootBuildImage <2>
 ----
+
 <1> Maven
 <2> Gradle
 
@@ -101,8 +102,8 @@ $ http GET http://127.0.0.1:8000/api/v1/home
 == Local Development
 
 When you run it locally, and you enable the *_Spring Boot_* profile named _'testdata'_
-then it will populate the Book database table with some test data. This profile must not be activated for other
-environments or even in local development should you need empty data or existing data.
+then it will populate the Book database table with some test data.
+This profile must not be activated for other environments or even in local development should you need empty data or existing data.
 
 To activate the profile you can include the following entry as an Environment key.
 

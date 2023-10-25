@@ -62,7 +62,7 @@ public class BookRepositoryJdbcTests {
     @DisplayName("Verify it should find a book by ISBN when existing.")
     void shouldFindBookByIsbnWhenExisting() {
         var bookIsbn = ISBN;
-        var book = Book.of(bookIsbn, TITLE, AUTHOR, PRICE_12_90);
+        var book = Book.of(bookIsbn, TITLE, AUTHOR, PRICE_12_90, null);
 
         jdbcAggregateTemplate.insert(book);
 

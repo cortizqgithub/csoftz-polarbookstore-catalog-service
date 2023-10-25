@@ -12,6 +12,7 @@ package com.polarbookshop.catalogservice.service;
 
 import static com.polarbookshop.catalogservice.common.consts.ExceptionConstants.BOOK_WITH_ISBN_ALREADY_EXISTS;
 import static com.polarbookshop.catalogservice.common.consts.ExceptionConstants.BOOK_WITH_ISBN_NOT_FOUND;
+import static com.polarbookshop.catalogservice.common.consts.GlobalConstants.PUBLISHER;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -55,7 +56,7 @@ class BookServiceImplTest {
     @DisplayName("Verify when a book is already created an exception is thrown.")
     void whenBookToCreateAlreadyExistsThenThrows() {
         var bookIsbn = ISBN;
-        var bookToCreate = Book.of(bookIsbn, TITLE, AUTHOR, PRICE);
+        var bookToCreate = Book.of(bookIsbn, TITLE, AUTHOR, PRICE, PUBLISHER);
 
         when(bookRepository.existsByIsbn(bookIsbn)).thenReturn(true);
 

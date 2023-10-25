@@ -16,6 +16,7 @@ import static com.polarbookshop.catalogservice.common.consts.GlobalConstants.BOO
 import static com.polarbookshop.catalogservice.common.consts.GlobalConstants.BOOK_PRICE_TWO;
 import static com.polarbookshop.catalogservice.common.consts.GlobalConstants.BOOK_TITLE_ONE;
 import static com.polarbookshop.catalogservice.common.consts.GlobalConstants.BOOK_TITLE_TWO;
+import static com.polarbookshop.catalogservice.common.consts.GlobalConstants.PUBLISHER;
 
 import com.polarbookshop.catalogservice.domain.Book;
 import com.polarbookshop.catalogservice.repository.BookRepository;
@@ -56,8 +57,8 @@ public class BookDataLoader {
         bookRepository.deleteAll();
         bookRepository.saveAll(
             List.of(
-                Book.of(BOOK_ISBN_ONE, BOOK_TITLE_ONE, BOOK_AUTHOR_ONE, BOOK_PRICE_ONE),
-                Book.of(BOOK_ISBN_TWO, BOOK_TITLE_TWO, BOOK_AUTHOR_TWO, BOOK_PRICE_TWO)
+                Book.of(BOOK_ISBN_ONE, BOOK_TITLE_ONE, BOOK_AUTHOR_ONE, BOOK_PRICE_ONE, PUBLISHER),
+                Book.of(BOOK_ISBN_TWO, BOOK_TITLE_TWO, BOOK_AUTHOR_TWO, BOOK_PRICE_TWO, PUBLISHER)
             )
         );
     }

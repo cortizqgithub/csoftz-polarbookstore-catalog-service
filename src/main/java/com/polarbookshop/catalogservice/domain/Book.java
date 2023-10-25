@@ -36,6 +36,7 @@ import org.springframework.data.annotation.Version;
  * @param title            Represents the given name for the book.
  * @param author           Represents the writer of the book.
  * @param price            Indicates the value of the book.
+ * @param publisher        Add publisher information.
  * @param version          Controls optimistic lock for concurrent updates.
  * @param createdDate      Audits record creation.
  * @param lastModifiedDate Audits record update.
@@ -65,6 +66,8 @@ public record Book(
     @Positive(message = BOOK_PRICE_MUST_BE_GREATER_THAN_ZERO)
     Double price,
 
+    String publisher,
+
     @CreatedDate
     Instant createdDate,
 
@@ -78,13 +81,14 @@ public record Book(
      * Performs a record instance creation of a Book without the managed Spring Data fields 'id', and 'version'.
      * It can be used to ease the creation of test data.
      *
-     * @param isbn   Represents the primary key.
-     * @param title  Represents the given name for the book.
-     * @param author Represents the writer of the book.
-     * @param price  Indicates the value of the book.
-     * @return
+     * @param isbn      Represents the primary key.
+     * @param title     Represents the given name for the book.
+     * @param author    Represents the writer of the book.
+     * @param price     Indicates the value of the book.
+     * @param publisher Add publisher information.
+     * @return Storeed information.
      */
-    public static Book of(String isbn, String title, String author, Double price) {
-        return new Book(null, isbn, title, author, price, null, null, 0);
+    public static Book of(String isbn, String title, String author, Double price, String publisher) {
+        return new Book(null, isbn, title, author, price, publisher, null, null, 0);
     }
 }
