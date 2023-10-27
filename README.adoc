@@ -217,6 +217,24 @@ $ docker network rm catalog-network <3>
 <2> Remove the container definitions.
 <3> Remove the *_Docker_* Network for container communication.
 
+== Build Docker image
+
+Here, we use the built-in *Spring Boot* image builder via BuildPacks.
+Use the following command to create the *_Docker_* image.
+
+[source,bash]
+----
+$ ./mvnw spring-boot:build-image
+----
+
+When running this command, the given image name is taken from the *_Maven Spring Boot Plugin_*, but if
+you would like to override it, then use the following command.
+
+[source,bash]
+----
+$ ./mvnw spring-boot:build-image -Ddocker.image.name={override name}
+----
+
 == Running using Docker Compose
 
 Open a terminal window where your _'docker-compose.yml'_ resides and execute the following command.
