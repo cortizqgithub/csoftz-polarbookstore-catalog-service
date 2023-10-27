@@ -17,6 +17,9 @@
     <properties>
         <java.version>17</java.version>
         <spring-cloud.version>2022.0.4</spring-cloud.version>
+        <docker.registry>ghcr.io</docker.registry>
+        <docker.user>cortizqgithub</docker.user>
+        <docker.image.name>${docker.registry}/${docker.user}/${project.name}:${project.version}</docker.image.name>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -122,6 +125,11 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <image>
+                        <name>${docker.image.name}</name>
+                    </image>
+                </configuration>
             </plugin>
         </plugins>
     </build>

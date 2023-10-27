@@ -127,6 +127,13 @@ ENV spring.profiles.active=testdata --> this needs to be rewritten to put the co
 | /books/{isbn} | DELETE |            | 204    |                | Delete the book with the given ISBN.
 |===
 
+== Dockerized app
+
+[source,bash]
+----
+$ docker network create [network name]
+----
+
 == Integrating with a Data Service Using PostgreSQL
 
 In order to connect to a *_PostgreSQL_* Database, we use *_Docker_* for that purpose.
@@ -136,6 +143,20 @@ Use the following command.
 ----
 $ docker run -d \
 --name polar-postgres \
+-e POSTGRES_USER=user \
+-e POSTGRES_PASSWORD=password \
+-e POSTGRES_DB=polardb_catalog \
+-p 5432:5432 \
+postgres:16.0  <1>
+----
+
+Uset the following command if you want this container to be part of a *_Docker Network_*.
+
+[source,bash]
+----
+$ docker run -d \
+--name polar-postgres \
+--net catalog-network \ <1>
 -e POSTGRES_USER=user \
 -e POSTGRES_PASSWORD=password \
 -e POSTGRES_DB=polardb_catalog \
@@ -160,6 +181,58 @@ and start it again with *_docker start polar-postgres_*.
 If you want to start over, you can remove the container with *_docker rm -fv polar-postgres_*
 and create it again with the previous docker run command.
 ====
+
+== Running in a container
+
+[source,bash]
+----
+$ docker run -d \
+--name catalog-service \
+--net catalog-network \
+-p 9001:9001 \
+-e SPRING_DATASOURCE_URL=jdbc:postgresql://polar-postgres:5432/polardb_catalog \
+-e SPRING_PROFILES_ACTIVE=testdata \
+catalog-service:2023.1.0
+----
+
+== Cleaning up
+
+At this point you have the following elements necessary the application.
+
+. A *_Docker_* network to communicate *_Docker_* containers.
+. A PostgreSQL container named _polar-postgres_.
+. The _catalog-service_ container.
+
+This is a way of running your containerized application, somehow there is another method which
+includes the use of *_Docker Compose_* componet (next section)
+To clean up, type the following commands
+
+[source,bash]
+----
+$ docker stop catalog-service polar-postgres <1>
+$ docker container rm -fv catalog-service polar-postgres <2>
+$ docker network rm catalog-network <3>
+----
+<1> Stop containers if they are running.
+<2> Remove the container definitions.
+<3> Remove the *_Docker_* Network for container communication.
+
+== Running using Docker Compose
+
+Open a terminal window where your _'docker-compose.yml'_ resides and execute the following command.
+
+[source,bash]
+----
+$ docker-compose up -d <1>
+----
+<1> Run it in detached mode.
+
+When you are done, you can remove the containers with the following command.
+
+[source,bash]
+----
+$ docker-compose down
+----
 
 === Database commands
 
