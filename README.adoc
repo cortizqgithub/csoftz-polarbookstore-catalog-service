@@ -11,12 +11,19 @@ Provides functionality for managing the books in the catalog.
 
 [source,bash]
 ----
-$ mvn spring-bood:buildImage <1>
+$ mvn spring-boot:buildImage <1>
 $./gradlew bootBuildImage <2>
 ----
+<1> Maven (Uses Buildpacks to generate the Docker image)
+<2> Gradle (Uses Buildpacks to generate the Docker image)
 
-<1> Maven
-<2> Gradle
+[source,bash]
+----
+$ mvn -Pnative spring-boot:build-image <1>
+$./gradlew bootBuildImage <2>
+----
+<1> Maven (Uses Buildpacks and GraalVM to generate the Docker image)
+<2> Gradle (Uses Buildpacks and GraalVM to generate the Docker image)
 
 [source,bash]
 ----
@@ -252,6 +259,65 @@ When you are done, you can remove the containers with the following command.
 $ docker-compose down
 ----
 
+== Running in Kubernetes (k8s)
+
+Open a terminal and navigate to the project root directory and type the following command to create the *Deployment*
+object for *k8s*.
+
+[source,bash]
+====
+$ kubectl apply -f k8s/deployment.yml
+====
+
+If everything works as expected the message should read as _'deployment.apps/catalog-service created'_.
+
+You can verify which objects have been created with the following command:
+
+[source,bash]
+----
+$ kubectl get all -l app=catalog-service
+----
+
+Now to validate that the *_catalog-service_* is running, check the logs
+
+[source,bash]
+----
+$ kubectl logs deployment/catalog-service
+----
+
+Now we need a way to expose the application, and it is done by apply the following manifest to *_k8s_*.
+
+[source,bash]
+----
+$ kubectl apply -f k8s/service.yml
+----
+
+The *_k8s*_ CLI says _'service/catalog-service created'_.
+
+To verify that it was created type.
+
+[source,bash]
+----
+$ kubectl get svc -l app=catalog-service
+----
+
+To expose to your local machine use the port forwarding in *_k8s_*.
+
+[source,bash]
+----
+$ kubectl port-forward service/catalog-service 9002:9001
+----
+
+== Validating k8s manifests
+In order to check that the manifests for *_k8s_* are compliant with the *_k8s_* API specification, use
+https://www.kubeval.com/[Kubeval^].
+
+[source,bash]
+----
+$ kubeval --strict -d k8s <1>
+----
+<1> Open a terminal to the root of project, as it will scan the _'k8s'_ folder.
+
 === Database commands
 
 You can use any IDE to access the database contents such as https://dbeaver.io/[DBeaver Community - Universal Database Tool], or you could open a terminal window connecting the Docker container.
@@ -289,3 +355,33 @@ The following query is to fetch all the data stored in the `flyway_schema_histor
 ----
 select * from flyway_schema_history;
 ----
+
+== Tilt
+
+This allows to automate the development process to run everything inside a *_k8s_* local cluster. You can go to
+https://tilt.dev/[Tilt^] for set up guidelines.
+
+After you have this app installed, go to a terminal window and type
+
+[source, bash]
+----
+$ tilt up <1>
+----
+<1> Uses the 'Tiltfile' in the root folder to configure everything.
+
+Once it is up and running, open _'http://localhost:10350/'_ which will show the status of the deployment.
+This will monitor for updates in source folder to update environemnt. To finish working with a session, type
+'CTRL+C' (Win) or '^C' (Mac), this will stop the running process.
+
+*_Tilt_* is smart enough to know that the *_k8s_* resources are still running, in fact, it has not been instructed
+to stop *_k8s_* resources, which you can do using the following command.
+
+[source,bash]
+----
+$ tilt down
+----
+
+== NOTES
+
+- Catalog Service uses the *_Spring Boot_* *_`server.shutdown=graceful`_* feature. See *_application.yml_*
+
