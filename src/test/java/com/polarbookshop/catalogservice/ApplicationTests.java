@@ -8,7 +8,7 @@
  -----------------------------------------------------------------------------*/
 package com.polarbookshop.catalogservice;
 
-import static com.polarbookshop.catalogservice.common.consts.TestcontainerConstants.POSTGRESQL_DOCKER_VERSION;
+import static com.polarbookshop.catalogservice.common.consts.TestContainerConstants.POSTGRESQL_DOCKER_VERSION;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -34,10 +34,10 @@ class ApplicationTests {
     /**
      * Load Spring Boot contexts to validate it can run the application.
      * Somehow, as some dependencies such as Backend Data Service or another component, it
-     * is required that we use Testcontainers in order to boostrap that dependency.
+     * is required that we use TestContainers in order to boostrap that dependency.
      * As this backend service requires PostgreSQL, we use a docker container to
      * fill the requirement, and actually use the same server as in prod. Here, we
-     * use Testcontainers to wire that context test. NOTE: Other containers should be
+     * use TestContainers to wire that context test. NOTE: Other containers should be
      * added when required.
      */
     @Test

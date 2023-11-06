@@ -16,7 +16,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Defines the operations to access data for Books.
+ * Defines the operations to access data for {@code Books}.
  * <p><b>NOTE:</b>As of Oct.23/2023, the definition is replaced by Spring Data semantics, if you want to
  * use the prior version, see commit be2522708a549351e94342a15ca0edf15b3a85fa</p>
  *

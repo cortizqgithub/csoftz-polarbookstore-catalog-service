@@ -11,7 +11,7 @@ package com.polarbookshop.catalogservice.controller.api.v1;
 import static com.polarbookshop.catalogservice.common.consts.ExceptionConstants.BOOK_WITH_ISBN_NOT_FOUND;
 import static com.polarbookshop.catalogservice.common.consts.GlobalConstants.PUBLISHER;
 import static com.polarbookshop.catalogservice.common.consts.GlobalConstants.SLASH;
-import static com.polarbookshop.catalogservice.common.consts.TestcontainerConstants.POSTGRESQL_DOCKER_VERSION;
+import static com.polarbookshop.catalogservice.common.consts.TestContainerConstants.POSTGRESQL_DOCKER_VERSION;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.polarbookshop.catalogservice.domain.Book;

@@ -28,7 +28,7 @@ import org.springframework.data.annotation.Version;
 /**
  * Defines the entity for Books.
  * <p>The field {@code isbn} is the primary key (natural key or business key).</p>
- * <p>The field {@code id} is a techical key (or surrogate key).</p>
+ * <p>The field {@code id} is a technical key (or surrogate key).</p>
  * <p>The field {@code version} is used to control a concurrent record update.</p>
  *
  * @param id               Represents the technical key.
@@ -37,15 +37,14 @@ import org.springframework.data.annotation.Version;
  * @param author           Represents the writer of the book.
  * @param price            Indicates the value of the book.
  * @param publisher        Add publisher information.
- * @param version          Controls optimistic lock for concurrent updates.
  * @param createdDate      Audits record creation.
  * @param lastModifiedDate Audits record update.
+ * @param version          Controls optimistic lock for concurrent updates.
  * @author COQ - Carlos Adolfo Ortiz Q.
  */
 public record Book(
     @Id
     Long id,
-
 
     @NotBlank(message = BOOK_ISBN_MUST_BE_DEFINED)
     @Pattern(
@@ -54,9 +53,7 @@ public record Book(
     )
     String isbn,
 
-    @NotBlank(
-        message = BOOK_TITLE_MUST_BE_DEFINED
-    )
+    @NotBlank(message = BOOK_TITLE_MUST_BE_DEFINED)
     String title,
 
     @NotBlank(message = BOOK_AUTHOR_MUST_BE_DEFINED)
@@ -86,7 +83,7 @@ public record Book(
      * @param author    Represents the writer of the book.
      * @param price     Indicates the value of the book.
      * @param publisher Add publisher information.
-     * @return Storeed information.
+     * @return Stored information.
      */
     public static Book of(String isbn, String title, String author, Double price, String publisher) {
         return new Book(null, isbn, title, author, price, publisher, null, null, 0);

@@ -47,7 +47,7 @@ import org.springframework.test.web.servlet.client.MockMvcWebTestClient;
 @WebMvcTest(BookController.class)
 class BookControllerIntegrationSlicedWebTestClientTest {
     private static final String ISBN = "73737313940";
-    private static final String API_BOOK_PATH = "/api/v1/books";
+    private static final String API_V1_BOOK_PATH = "/api/v1/books";
 
     private WebTestClient client;
 
@@ -67,7 +67,7 @@ class BookControllerIntegrationSlicedWebTestClientTest {
         given(bookService.viewBookDetails(ISBN)).willThrow(BookNotFoundException.class);
 
         client.get()
-            .uri(API_BOOK_PATH + SLASH + ISBN)
+            .uri(API_V1_BOOK_PATH + SLASH + ISBN)
             .accept(MediaType.APPLICATION_JSON)
             .header(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
             .exchange()

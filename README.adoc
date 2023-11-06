@@ -9,6 +9,21 @@ https://www.manning.com/books/cloud-native-spring-in-action[Cloud Native Spring 
 
 Provides functionality for managing the books in the catalog.
 
+== REST API
+
+[%header]
+|===
+|Endpoint|Method|Req. body|Status|Resp. body|Description
+| /api/v1/books        | GET    |            | 200 | Book[] | Get all the books in the catalog
+| /api/v1/books        | POST   | Book       | 201 | Book   | Add a new book to the catalog.
+|                      |        |            | 422 |        | A book with the same ISBN already exists.
+| /api/v1/books/{isbn} | GET    |            | 200 | Book   | Get the book with the given ISBN.
+|                      |        |            | 404 |        | No book with the given ISBN exists.
+| /api/v1/books/{isbn} | PUT    | Book       | 200 | Book   | Update the book with the given ISBN.
+|                      |        |            | 201 | Book   | Create a book with the given ISBN.
+| /api/v1/books/{isbn} | DELETE |            | 204 |        | Delete the book with the given ISBN.
+|===
+
 [source,bash]
 ----
 $ mvn spring-boot:buildImage <1>
@@ -118,21 +133,6 @@ To activate the profile you can include the following entry as an Environment ke
 ----
 ENV spring.profiles.active=testdata --> this needs to be rewritten to put the correct information.
 ----
-
-== REST API
-
-[%header]
-|===
-|Endpoint|Method|Req. body|Status|Resp. body|Description
-|/books         | GET    | |200|Book[]|Get all the books in the catalog
-|/books         | POST   | Book       | 201    | Book           | Add a new book to the catalog.
-|               |        |            | 422    |                | A book with the same ISBN already exists.
-| /books/{isbn} | GET    |            | 200    | Book           | Get the book with the given ISBN.
-|               |        |            | 404    |                | No book with the given ISBN exists.
-| /books/{isbn} | PUT    | Book       | 200    | Book           | Update the book with the given ISBN.
-|               |        |            | 201    | Book           | Create a book with the given ISBN.
-| /books/{isbn} | DELETE |            | 204    |                | Delete the book with the given ISBN.
-|===
 
 == Dockerized app
 

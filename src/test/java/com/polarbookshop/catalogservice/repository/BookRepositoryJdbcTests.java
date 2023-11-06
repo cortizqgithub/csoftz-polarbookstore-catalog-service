@@ -8,7 +8,7 @@
  -----------------------------------------------------------------------------*/
 package com.polarbookshop.catalogservice.repository;
 
-import static com.polarbookshop.catalogservice.common.consts.TestcontainerConstants.POSTGRESQL_DOCKER_VERSION;
+import static com.polarbookshop.catalogservice.common.consts.TestContainerConstants.POSTGRESQL_DOCKER_VERSION;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.polarbookshop.catalogservice.common.config.DataConfig;
@@ -52,7 +52,7 @@ public class BookRepositoryJdbcTests {
     private JdbcAggregateTemplate jdbcAggregateTemplate;
 
     @Test
-    @DisplayName("Verify the Testcontainer has access to the server.")
+    @DisplayName("Verify the TestContainer has access to the server.")
     void shouldEstablishConnection() {
         assertThat(postgres.isCreated()).isTrue();
         assertThat(postgres.isRunning()).isTrue();

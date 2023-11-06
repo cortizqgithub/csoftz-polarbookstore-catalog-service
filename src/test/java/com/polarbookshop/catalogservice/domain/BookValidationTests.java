@@ -48,8 +48,7 @@ class BookValidationTests {
 
     @BeforeAll
     static void setUp() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
+        validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
 
     @Test
