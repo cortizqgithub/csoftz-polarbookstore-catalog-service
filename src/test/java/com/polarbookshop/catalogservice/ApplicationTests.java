@@ -33,7 +33,7 @@ class ApplicationTests {
 
     /**
      * Load Spring Boot contexts to validate it can run the application.
-     * Somehow, as some dependencies such as Backend Data Service or other component, it
+     * Somehow, as some dependencies such as Backend Data Service or another component, it
      * is required that we use Testcontainers in order to boostrap that dependency.
      * As this backend service requires PostgreSQL, we use a docker container to
      * fill the requirement, and actually use the same server as in prod. Here, we
