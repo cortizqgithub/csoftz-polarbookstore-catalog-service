@@ -171,7 +171,7 @@ $ docker run -d \
 postgres:16.0  <1>
 ----
 
-<1> https://hub.docker.com/_/postgres, use latest tag to use the most recent version.
+<1> https://hub.docker.com/postgres, use latest tag to use the most recent version.
 
 [WARNING]
 ====
@@ -320,7 +320,7 @@ $ kubeval --strict -d k8s <1>
 
 === Database commands
 
-You can use any IDE to access the database contents such as https://dbeaver.io/[DBeaver Community - Universal Database Tool], or you could open a terminal window connecting the Docker container.
+You can use any IDE to access the database contents such as https://dbeaver.io/[DBeaver Community - Universal Database Tool^], or you could open a terminal window connecting the Docker container.
 
 Start an interactive PSQL console:
 
